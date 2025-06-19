@@ -1,4 +1,4 @@
-import { PaginationParams } from '@/core/repositories/pagination-params';
+import { PaginationParams } from '@/core/types/pagination-params';
 import { ProgramEntity } from '@/domain/programs/enterprise/entities';
 
 interface ProgramFilters extends PaginationParams {
