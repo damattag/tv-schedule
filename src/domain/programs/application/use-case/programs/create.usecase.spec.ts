@@ -1,7 +1,7 @@
 import { makeProgram } from 'test/factories/program.factory';
 import { ConflictException, InvalidInputException } from '@/core/exceptions';
 import { ProgramRepository } from '@/domain/programs/application/repositories';
-import { CreateProgramUseCase } from './create-program.usecase';
+import { CreateProgramUseCase } from './create.usecase';
 
 let programRepository: ProgramRepository;
 let sut: CreateProgramUseCase;

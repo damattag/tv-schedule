@@ -1,2 +1,3 @@
-export * from './create-program.usecase';
-export * from './list-programs.usecase';
+export * from './programs/create.usecase';
+export * from './programs/get-by-id.usecase';
+export * from './programs/list.usecase';

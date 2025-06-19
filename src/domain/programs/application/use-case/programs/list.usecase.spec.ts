@@ -1,5 +1,5 @@
 import { ProgramRepository } from '@/domain/programs/application/repositories';
-import { ListProgramsUseCase } from './list-programs.usecase';
+import { ListProgramsUseCase } from './list.usecase';
 
 let programRepository: ProgramRepository;
 let sut: ListProgramsUseCase;
