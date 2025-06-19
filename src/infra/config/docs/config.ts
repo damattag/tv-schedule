@@ -4,8 +4,8 @@ import {
   type SwaggerCustomOptions,
   SwaggerModule,
 } from '@nestjs/swagger';
+import type { AppEnvironment } from '@/infra/config/cors';
 import { EnvService } from '@/infra/env';
-import type { AppEnvironment } from '@/infra/nest/config/cors';
 
 type GenerateSwaggerConfigInput = {
   apiPort: number;
