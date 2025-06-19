@@ -1,10 +1,10 @@
 import 'reflect-metadata';
 import { type INestApplication, Logger, ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
+import { AppModule } from './app.module';
+import { AppEnvironment, corsOptions } from './infra/config/cors';
+import { openApi } from './infra/config/docs';
 import { EnvService } from './infra/env';
-import { AppEnvironment, corsOptions } from './infra/nest/config/cors';
-import { openApi } from './infra/nest/config/docs';
-import { AppModule } from './infra/nest/modules/app.module';
 
 let app: INestApplication | null = null;
 

@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { AppEnvironment } from '@/infra/nest/config/cors/config';
+import { AppEnvironment } from '@/infra/config/cors';
 
 export const envSchema = z.object({
   NODE_ENV: z.nativeEnum(AppEnvironment).default(AppEnvironment.LOCAL),
