@@ -7,7 +7,7 @@ export interface ProgramProps {
   description: string;
   initialDate: Date;
   finalDate: Date;
-  banner?: string | null;
+  bannerId?: string | null;
   createdAt: Date;
   updatedAt?: Date | null;
 }
@@ -31,8 +31,8 @@ export class ProgramEntity extends Entity<ProgramProps> {
     return this.props.finalDate;
   }
 
-  get banner(): string | null {
-    return this.props.banner ?? null;
+  get bannerId(): string | null {
+    return this.props.bannerId ?? null;
   }
 
   set name(value: string) {
@@ -46,16 +46,38 @@ export class ProgramEntity extends Entity<ProgramProps> {
   }
 
   set initialDate(value: Date) {
+    if (value >= this.props.finalDate) {
+      throw new InvalidInputException({
+        message: 'Initial date must be before final date',
+        code: 'INVALID_DATE_RANGE',
+        data: {
+          initialDate: value,
+          finalDate: this.props.finalDate,
+        },
+      });
+    }
+
     this.props.initialDate = value;
     this.touch();
   }
 
-  set banner(value: string) {
-    this.props.banner = value;
+  set bannerId(value: string | null) {
+    this.props.bannerId = value;
     this.touch();
   }
 
   set finalDate(value: Date) {
+    if (value <= this.props.initialDate) {
+      throw new InvalidInputException({
+        message: 'Final date must be after initial date',
+        code: 'INVALID_DATE_RANGE',
+        data: {
+          initialDate: this.props.initialDate,
+          finalDate: value,
+        },
+      });
+    }
+
     this.props.finalDate = value;
     this.touch();
   }
