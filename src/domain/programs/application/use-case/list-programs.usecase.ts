@@ -1,3 +1,4 @@
+import { Injectable } from '@nestjs/common';
 import { ProgramRepository } from '@/domain/programs/application/repositories';
 import { ProgramEntity } from '@/domain/programs/enterprise/entities';
 
@@ -5,14 +6,15 @@ interface ListProgramsRequest {
   search?: string;
   initialDate?: Date;
   finalDate?: Date;
-  page: number;
-  limit: number;
+  page?: number;
+  limit?: number;
 }
 
 interface ListProgramsResponse {
   programs: ProgramEntity[];
 }
 
+@Injectable()
 export class ListProgramsUseCase {
   constructor(private readonly programRepository: ProgramRepository) {}
 

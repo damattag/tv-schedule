@@ -1,4 +1,5 @@
-import { InvalidInputException } from '@/core/exceptions/invalid-input.exception';
+import { makeProgram } from 'test/factories/program.factory';
+import { ConflictException, InvalidInputException } from '@/core/exceptions';
 import { ProgramRepository } from '@/domain/programs/application/repositories';
 import { CreateProgramUseCase } from './create-program.usecase';
 
@@ -12,9 +13,6 @@ describe('Create Program', () => {
     programRepository = {
       create: vi.fn(),
       list: vi.fn(),
-      findById: vi.fn(),
-      update: vi.fn(),
-      delete: vi.fn(),
     } as unknown as ProgramRepository;
 
     sut = new CreateProgramUseCase(programRepository);
@@ -59,5 +57,21 @@ describe('Create Program', () => {
           finalDate: date,
         }),
     ).rejects.toBeInstanceOf(InvalidInputException);
+  });
+
+  it('should not be able to create a program when a program with the same date already exists', async () => {
+    const program = makeProgram();
+
+    programRepository.list = vi.fn().mockResolvedValue([program]);
+
+    await expect(
+      async () =>
+        await sut.execute({
+          name: 'Test Program',
+          description: 'Test Description',
+          initialDate: program.initialDate,
+          finalDate: program.finalDate,
+        }),
+    ).rejects.toBeInstanceOf(ConflictException);
   });
 });

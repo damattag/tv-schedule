@@ -1,3 +1,4 @@
+import { Injectable } from '@nestjs/common';
 import { ConflictException } from '@/core/exceptions';
 import { ProgramRepository } from '@/domain/programs/application/repositories';
 import { ProgramEntity } from '@/domain/programs/enterprise/entities';
@@ -14,6 +15,7 @@ interface CreateProgramResponse {
   program: ProgramEntity;
 }
 
+@Injectable()
 export class CreateProgramUseCase {
   constructor(private readonly programRepository: ProgramRepository) {}
 
