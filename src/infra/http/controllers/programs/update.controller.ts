@@ -8,7 +8,13 @@ import {
   Patch,
   UploadedFile,
 } from '@nestjs/common';
-import { ApiBody, ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBody,
+  ApiConsumes,
+  ApiOperation,
+  ApiParam,
+  ApiTags,
+} from '@nestjs/swagger';
 import { UpdateProgramUseCase } from '@/domain/programs/application/use-case';
 import { SwaggerTags } from '@/infra/config/docs';
 import {
@@ -26,6 +32,7 @@ export class UpdateProgramController {
 
   @Patch('/:id')
   @ApiOperation({ summary: 'Update a program' })
+  @ApiConsumes('multipart/form-data')
   @ApiParam({
     name: 'id',
     schema: { type: 'string', format: 'uuid' },

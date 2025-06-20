@@ -25,9 +25,16 @@ export const updateProgramBodyValidationPipe = new ZodValidationPipe(
   updateProgramBodySchema,
 );
 
-export const updateProgramBodySwaggerSchema = z.toJSONSchema(
+const updateProgramBodySwaggerSchema = z.toJSONSchema(
   updateProgramBodySchema.extend({
     initial_date: z.iso.datetime().describe('The initial date of the program'),
     final_date: z.iso.datetime().describe('The final date of the program'),
   }),
 ) as SchemasObject;
+
+updateProgramBodySwaggerSchema.properties['file'] = {
+  type: 'string',
+  format: 'binary',
+};
+
+export { updateProgramBodySwaggerSchema };

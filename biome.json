@@ -31,7 +31,8 @@
         "noExplicitAny": "off"
       },
       "complexity": {
-        "noStaticOnlyClass": "off"
+        "noStaticOnlyClass": "off",
+        "useLiteralKeys": "off"
       }
     }
   },

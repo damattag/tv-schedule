@@ -11,7 +11,7 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { ApiBody, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiBody, ApiConsumes, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { CreateProgramUseCase } from '@/domain/programs/application/use-case';
 import { SwaggerTags } from '@/infra/config/docs';
 import {
@@ -28,6 +28,7 @@ export class CreateProgramController {
 
   @Post()
   @ApiOperation({ summary: 'Create a new program' })
+  @ApiConsumes('multipart/form-data')
   @ApiBody({ schema: createProgramBodySwaggerSchema })
   @HttpCode(HttpStatus.CREATED)
   async handle(
