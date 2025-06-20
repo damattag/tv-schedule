@@ -19,7 +19,12 @@ export enum SwaggerTags {
 }
 
 export const generateSwaggerConfig = (input: GenerateSwaggerConfigInput) => {
-  const { apiPort, environment, jsonDocumentUrl, host = 'http://localhost' } = input;
+  const {
+    apiPort,
+    environment,
+    jsonDocumentUrl,
+    host = 'http://localhost',
+  } = input;
 
   const API_NAME = 'TV Scheduler API';
   const API_DESCRIPTION = 'TV Scheduler API';

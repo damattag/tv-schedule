@@ -9,6 +9,7 @@ import {
   UploadedFile,
 } from '@nestjs/common';
 import {
+  ApiBasicAuth,
   ApiBody,
   ApiConsumes,
   ApiOperation,
@@ -26,6 +27,7 @@ import {
 } from '@/infra/http/dtos/programs';
 
 @Controller('programs')
+@ApiBasicAuth()
 @ApiTags(SwaggerTags.PROGRAMS)
 export class UpdateProgramController {
   constructor(private readonly updateProgramUseCase: UpdateProgramUseCase) {}

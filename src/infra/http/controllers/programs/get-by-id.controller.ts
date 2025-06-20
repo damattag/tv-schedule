@@ -1,5 +1,6 @@
 import { Controller, Get, HttpCode, HttpStatus, Param } from '@nestjs/common';
 import {
+  ApiBasicAuth,
   ApiOkResponse,
   ApiOperation,
   ApiParam,
@@ -16,6 +17,7 @@ import {
 import { ProgramDetailsPresenter } from '@/infra/http/presenters';
 
 @Controller('programs')
+@ApiBasicAuth()
 @ApiTags(SwaggerTags.PROGRAMS)
 export class GetProgramByIdController {
   constructor(private readonly getProgramByIdUseCase: GetProgramByIdUseCase) {}

@@ -8,6 +8,9 @@ export const envSchema = z.object({
   DATABASE_URL: z.string(),
 
   FRONT_DEPLOY_URL: z.string().default(''),
+
+  BASIC_USER: z.string().default('admin'),
+  BASIC_PASS: z.string().default('VerySt0ngP4ss'),
 });
 
 export type Env = z.infer<typeof envSchema>;

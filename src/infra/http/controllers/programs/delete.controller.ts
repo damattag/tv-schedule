@@ -5,7 +5,7 @@ import {
   HttpStatus,
   Param,
 } from '@nestjs/common';
-import { ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
+import { ApiBasicAuth, ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
 import { DeleteProgramUseCase } from '@/domain/programs/application/use-case';
 import { SwaggerTags } from '@/infra/config/docs';
 import {
@@ -14,12 +14,14 @@ import {
 } from '@/infra/http/dtos/programs';
 
 @Controller('programs')
+@ApiBasicAuth()
 @ApiTags(SwaggerTags.PROGRAMS)
 export class DeleteProgramController {
   constructor(private readonly deleteProgramUseCase: DeleteProgramUseCase) {}
 
   @Delete('/:id')
   @ApiOperation({ summary: 'Delete a program' })
+
   @ApiParam({
     name: 'id',
     schema: { type: 'string', format: 'uuid' },

@@ -11,7 +11,13 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { ApiBody, ApiConsumes, ApiOperation, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBasicAuth,
+  ApiBody,
+  ApiConsumes,
+  ApiOperation,
+  ApiTags,
+} from '@nestjs/swagger';
 import { CreateProgramUseCase } from '@/domain/programs/application/use-case';
 import { SwaggerTags } from '@/infra/config/docs';
 import {
@@ -22,6 +28,7 @@ import {
 
 @Controller('programs')
 @UseInterceptors(FileInterceptor('file'))
+@ApiBasicAuth()
 @ApiTags(SwaggerTags.PROGRAMS)
 export class CreateProgramController {
   constructor(private readonly createProgramUseCase: CreateProgramUseCase) {}

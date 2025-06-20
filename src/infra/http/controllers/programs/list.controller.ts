@@ -1,5 +1,5 @@
 import { Controller, Get, Query } from '@nestjs/common';
-import { ApiOperation, ApiQuery, ApiTags } from '@nestjs/swagger';
+import { ApiBasicAuth, ApiOperation, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { ListProgramsUseCase } from '@/domain/programs/application/use-case';
 import { SwaggerTags } from '@/infra/config/docs';
 import {
@@ -10,6 +10,7 @@ import {
 import { ProgramDetailsPresenter } from '@/infra/http/presenters';
 
 @Controller('programs')
+@ApiBasicAuth()
 @ApiTags(SwaggerTags.PROGRAMS)
 export class ListProgramsController {
   constructor(private readonly listProgramsUseCase: ListProgramsUseCase) {}
