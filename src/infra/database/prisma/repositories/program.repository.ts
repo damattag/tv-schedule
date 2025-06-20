@@ -81,9 +81,16 @@ export class PrismaProgramRepository implements ProgramRepository {
   async listWithDetails(
     input: ProgramFilters,
   ): Promise<ProgramDetailsEntity[]> {
+    const { page, limit } = input;
+
+    const skip = this.buildSkip(page, limit);
+
     const programs = await this.prisma.program.findMany({
       where: this.buildWhere(input),
       include: { banner: true },
+      orderBy: { initialDate: 'desc' },
+      skip,
+      take: limit,
     });
 
     return programs.map(ProgramDetailsMapper.toDomain);

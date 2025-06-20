@@ -6,11 +6,8 @@ export class DefaultFilter implements ExceptionFilter {
   catch(exception: DefaultException, host: ArgumentsHost) {
     const ctx = host.switchToHttp();
     const response = ctx.getResponse();
-    const request = ctx.getRequest();
 
     const status = exception.status;
-
-    console.log(exception);
 
     const timestamp = new Date().toISOString();
 

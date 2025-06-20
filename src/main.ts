@@ -5,7 +5,7 @@ import { AppModule } from '@/infra/app.module';
 import { AppEnvironment, corsOptions } from '@/infra/config/cors';
 import { openApi } from '@/infra/config/docs';
 import { EnvService } from '@/infra/env';
-import { DefaultFilter } from './infra/exceptions';
+import { DefaultFilter, PrismaFilter } from '@/infra/exceptions';
 
 let app: INestApplication | null = null;
 
@@ -25,7 +25,7 @@ async function bootstrap() {
 
   app.useGlobalPipes(new ValidationPipe({ transform: true }));
 
-  app.useGlobalFilters(new DefaultFilter());
+  app.useGlobalFilters(new DefaultFilter(), new PrismaFilter());
 
   app.enableShutdownHooks();
 
