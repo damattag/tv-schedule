@@ -5,6 +5,7 @@ services:
       - development
     image: bitnami/mysql:8.4.5
     restart: unless-stopped
+    hostname: db
     ports:
       - ${DATABASE_PORT}:3306
     environment:
@@ -19,11 +20,15 @@ services:
       interval: 5s
       timeout: 2s
       retries: 20
+    networks:
+      - tv-schedule-network
 
   db-test:
     profiles:
       - local
+      - development
     image: bitnami/mysql:8.4.5
+    hostname: db-test
     restart: unless-stopped
     ports:
       - 3307:3306
@@ -32,6 +37,8 @@ services:
       - MYSQL_DATABASE=${DATABASE_NAME}-test
       - MYSQL_USER=${DATABASE_USER}
       - MYSQL_PASSWORD=${DATABASE_PASSWORD}
+    networks:
+      - tv-schedule-network
 
   app:
     profiles:
@@ -39,9 +46,19 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+    command: pnpm start:prod
     ports:
       - ${API_PORT}:3001
+    env_file:
+      - .env
     environment:
-      - DATABASE_URL=mysql://root:${DATABASE_PASSWORD}@localhost:${DATABASE_PORT}/${DATABASE_NAME}
+      - DATABASE_URL=mysql://${DATABASE_USER}:${DATABASE_PASSWORD}@${DATABASE_HOST}:${DATABASE_PORT}/${DATABASE_NAME}
     depends_on:
-      - db  
+      db:
+        condition: service_healthy
+    networks:
+      - tv-schedule-network
+
+networks:
+  tv-schedule-network:
+    external: true
