@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { ConflictException } from '@/core/exceptions';
+import { FileInput } from '@/core/types/file';
 import { ProgramRepository } from '@/domain/programs/application/repositories';
 import { ProgramEntity } from '@/domain/programs/enterprise/entities';
 
@@ -8,7 +9,7 @@ interface CreateProgramRequest {
   description: string;
   initialDate: Date;
   finalDate: Date;
-  bannerId?: string;
+  banner?: FileInput;
 }
 
 interface CreateProgramResponse {

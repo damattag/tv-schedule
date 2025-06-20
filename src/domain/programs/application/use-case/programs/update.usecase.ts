@@ -1,4 +1,5 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
+import { FileInput } from '@/core/types/file';
 import { ProgramRepository } from '@/domain/programs/application/repositories';
 import { ProgramEntity } from '@/domain/programs/enterprise/entities';
 
@@ -8,7 +9,7 @@ interface UpdateProgramRequest {
   description: string;
   initialDate: Date;
   finalDate: Date;
-  bannerId: string | null;
+  banner?: FileInput;
 }
 
 interface UpdateProgramResponse {
@@ -20,7 +21,7 @@ export class UpdateProgramUseCase {
   constructor(private readonly programRepository: ProgramRepository) {}
 
   async execute(input: UpdateProgramRequest): Promise<UpdateProgramResponse> {
-    const { id, name, description, initialDate, finalDate, bannerId } = input;
+    const { id, name, description, initialDate, finalDate } = input;
 
     const program = await this.programRepository.findById(id);
 
@@ -38,7 +39,6 @@ export class UpdateProgramUseCase {
     program.description = description;
     program.initialDate = initialDate;
     program.finalDate = finalDate;
-    program.bannerId = bannerId;
 
     await this.programRepository.update(program);
 
