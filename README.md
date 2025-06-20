@@ -70,7 +70,7 @@ Before you begin, ensure you have the following installed:
 
 1. Start the database and application:
    ```bash
-   docker-compose --profile development up -d
+   ./init.sh
    ```
 
 2. The API will be available at `http://localhost:3001`
