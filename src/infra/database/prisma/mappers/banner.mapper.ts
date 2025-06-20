@@ -9,6 +9,7 @@ export class BannerMapper {
         name: raw.name,
         type: raw.type,
         base64: raw.base64,
+        programId: new UniqueEntityId(raw.programId),
         createdAt: new Date(raw.createdAt),
         updatedAt: raw.updatedAt ? new Date(raw.updatedAt) : undefined,
       },
@@ -22,6 +23,7 @@ export class BannerMapper {
       name: banner.name,
       type: banner.type,
       base64: banner.base64,
+      programId: banner.programId.toString(),
       createdAt: banner.createdAt,
       updatedAt: banner.updatedAt ?? undefined,
     };

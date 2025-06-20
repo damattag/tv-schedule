@@ -1,13 +1,20 @@
-import { Injectable, Logger, OnModuleDestroy, OnModuleInit } from '@nestjs/common';
+import {
+  Injectable,
+  Logger,
+  OnModuleDestroy,
+  OnModuleInit,
+} from '@nestjs/common';
 import { PrismaClient } from '@prisma/client';
 
 @Injectable()
-export class PrismaService extends PrismaClient implements OnModuleInit, OnModuleDestroy {
+export class PrismaService
+  extends PrismaClient
+  implements OnModuleInit, OnModuleDestroy
+{
   constructor() {
     const env = process.env.NODE_ENV;
-    console.log(env);
     super({
-      log: env !== 'production' ? ['query', 'info', 'warn', 'error'] : [],
+      log: env !== 'production' ? ['warn', 'error'] : [],
     });
   }
   onModuleInit() {

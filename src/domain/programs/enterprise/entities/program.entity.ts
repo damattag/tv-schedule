@@ -7,7 +7,6 @@ export interface ProgramProps {
   description: string;
   initialDate: Date;
   finalDate: Date;
-  bannerId?: UniqueEntityId | null;
   createdAt: Date;
   updatedAt?: Date | null;
 }
@@ -29,10 +28,6 @@ export class ProgramEntity extends Entity<ProgramProps> {
 
   get finalDate() {
     return this.props.finalDate;
-  }
-
-  get bannerId(): UniqueEntityId | null {
-    return this.props.bannerId ?? null;
   }
 
   get createdAt() {
@@ -66,11 +61,6 @@ export class ProgramEntity extends Entity<ProgramProps> {
     }
 
     this.props.initialDate = value;
-    this.touch();
-  }
-
-  set bannerId(value: UniqueEntityId | null) {
-    this.props.bannerId = value;
     this.touch();
   }
 

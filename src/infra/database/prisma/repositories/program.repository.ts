@@ -54,7 +54,7 @@ export class PrismaProgramRepository implements ProgramRepository {
     const data = ProgramsMapper.toPrisma(program);
 
     await this.prisma.program.update({
-      where: { id: program.id.toString() },
+      where: { id: data.id },
       data,
     });
   }

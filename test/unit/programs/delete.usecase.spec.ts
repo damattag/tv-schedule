@@ -1,15 +1,11 @@
 import { makeProgram } from 'test/factories/program.factory';
 import { NotFoundException } from '@/core/exceptions';
-import {
-  BannerRepository,
-  ProgramRepository,
-} from '@/domain/programs/application/repositories';
+import { ProgramRepository } from '@/domain/programs/application/repositories';
 import { DeleteProgramUseCase } from '@/domain/programs/application/use-case/programs/delete.usecase';
 
 describe('Delete Program', () => {
   let sut: DeleteProgramUseCase;
   let programRepository: ProgramRepository;
-  let bannerRepository: BannerRepository;
 
   beforeEach(() => {
     programRepository = {
@@ -17,12 +13,7 @@ describe('Delete Program', () => {
       delete: vi.fn(),
     } as unknown as ProgramRepository;
 
-    bannerRepository = {
-      findById: vi.fn(),
-      delete: vi.fn(),
-    } as unknown as BannerRepository;
-
-    sut = new DeleteProgramUseCase(programRepository, bannerRepository);
+    sut = new DeleteProgramUseCase(programRepository);
   });
 
   it('should be able to delete a program', async () => {

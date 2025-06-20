@@ -20,9 +20,8 @@ model Program {
   description String
   initialDate DateTime
   finalDate   DateTime
-  bannerId    String?  @unique
 
-  banner Banner? @relation(fields: [bannerId], references: [id], onDelete: Cascade)
+  banner Banner?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -35,9 +34,10 @@ model Banner {
 
   name   String
   type   String
-  base64 String
+  base64 String @db.LongText
 
-  program Program?
+  programId String  @unique
+  program   Program @relation(fields: [programId], references: [id], onDelete: Cascade)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

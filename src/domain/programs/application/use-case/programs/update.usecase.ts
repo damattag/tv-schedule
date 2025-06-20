@@ -44,22 +44,9 @@ export class UpdateProgramUseCase {
     program.initialDate = initialDate;
     program.finalDate = finalDate;
 
-    if (program.bannerId) {
-      const currentBanner = await this.bannerRepository.findById(
-        program.bannerId.toString(),
-      );
+    const currentBanner = await this.bannerRepository.findByProgramId(id);
 
-      if (!currentBanner) {
-        throw new NotFoundException({
-          message: 'Banner not found',
-          code: 'BANNER_NOT_FOUND',
-          data: {
-            id: program.bannerId.toString(),
-          },
-        });
-      }
-
-      program.bannerId = null;
+    if (currentBanner) {
       await this.bannerRepository.delete(currentBanner.id.toString());
     }
 
@@ -70,11 +57,10 @@ export class UpdateProgramUseCase {
         name: banner.name,
         type: banner.type,
         base64,
+        programId: program.id,
       });
 
       await this.bannerRepository.create(bannerEntity);
-
-      program.bannerId = bannerEntity.id;
     }
 
     await this.programRepository.update(program);

@@ -31,6 +31,7 @@ export class ProgramDetailsMapper {
       initialTime: formattedInitialTime,
       finalTime: formattedFinalTime,
       bannerBase64,
+      bannerType: banner?.type ?? null,
     });
   }
 }

@@ -14,6 +14,18 @@ export class PrismaBannerRepository implements BannerRepository {
     await this.prisma.banner.create({ data });
   }
 
+  async findByProgramId(programId: string): Promise<BannerEntity | null> {
+    const banner = await this.prisma.banner.findUnique({
+      where: { programId },
+    });
+
+    if (!banner) {
+      return null;
+    }
+
+    return BannerMapper.toDomain(banner);
+  }
+
   async findById(id: string): Promise<BannerEntity | null> {
     const banner = await this.prisma.banner.findUnique({ where: { id } });
 

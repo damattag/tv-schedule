@@ -1,12 +1,12 @@
 import { makeBanner } from 'test/factories/banner.factory';
 import { makeProgram } from 'test/factories/program.factory';
-import { UniqueEntityId } from '@/core/entities';
 import { ConflictException, InvalidInputException } from '@/core/exceptions';
 import {
   BannerRepository,
   ProgramRepository,
 } from '@/domain/programs/application/repositories';
 import { CreateProgramUseCase } from '@/domain/programs/application/use-case/programs/create.usecase';
+import { UniqueEntityId } from '@/core/entities';
 
 let programRepository: ProgramRepository;
 let bannerRepository: BannerRepository;
@@ -86,7 +86,6 @@ describe('Create Program', () => {
         description: program.description,
         initialDate: program.initialDate,
         finalDate: program.finalDate,
-        bannerId: expect.any(UniqueEntityId),
       }),
     );
     expect(bannerRepository.create).toHaveBeenCalledWith(
@@ -94,6 +93,7 @@ describe('Create Program', () => {
         name: banner.name,
         type: banner.type,
         base64: banner.base64,
+        programId: expect.any(UniqueEntityId),
       }),
     );
   });

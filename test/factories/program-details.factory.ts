@@ -23,6 +23,7 @@ export function makeProgramDetails(
     initialTime: formattedInitialTime,
     finalTime: formattedFinalTime,
     bannerBase64: Buffer.from(faker.image.url()).toString('base64'),
+    bannerType: 'image/png',
     ...override,
   });
 }

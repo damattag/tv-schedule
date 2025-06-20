@@ -10,6 +10,7 @@ export class ProgramDetailsPresenter {
       start_time: program.initialTime,
       end_time: program.finalTime,
       banner_base64: program.bannerBase64,
+      banner_type: program.bannerType,
     };
   }
 }

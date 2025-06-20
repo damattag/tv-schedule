@@ -5,6 +5,7 @@ export interface BannerProps {
   name: string;
   type: string;
   base64: string;
+  programId: UniqueEntityId;
 
   createdAt: Date;
   updatedAt?: Date | null;
@@ -23,6 +24,10 @@ export class BannerEntity extends Entity<BannerProps> {
 
   get base64() {
     return this.props.base64;
+  }
+
+  get programId() {
+    return this.props.programId;
   }
 
   get createdAt() {

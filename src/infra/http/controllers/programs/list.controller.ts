@@ -1,13 +1,13 @@
 import { Controller, Get, Query } from '@nestjs/common';
 import { ApiOperation, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { ListProgramsUseCase } from '@/domain/programs/application/use-case';
+import { SwaggerTags } from '@/infra/config/docs';
 import {
   ListProgramsQueryParams,
   ListProgramsResponse,
   listProgramsQueryParamsValidationPipe,
 } from '@/infra/http/dtos/programs';
 import { ProgramDetailsPresenter } from '@/infra/http/presenters';
-import { SwaggerTags } from '@/infra/config/docs';
 
 @Controller('programs')
 @ApiTags(SwaggerTags.PROGRAMS)

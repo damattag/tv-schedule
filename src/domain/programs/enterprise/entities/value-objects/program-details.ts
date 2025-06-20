@@ -8,6 +8,7 @@ export interface ProgramDetailsProps {
   initialTime: string;
   finalTime: string;
   bannerBase64: string | null;
+  bannerType: string | null;
 }
 
 export class ProgramDetailsEntity {
@@ -35,6 +36,10 @@ export class ProgramDetailsEntity {
 
   get finalTime(): string {
     return this.props.finalTime;
+  }
+
+  get bannerType() {
+    return this.props.bannerType;
   }
 
   get bannerBase64() {

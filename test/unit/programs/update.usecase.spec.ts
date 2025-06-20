@@ -23,15 +23,14 @@ describe('Update Program', () => {
       findById: vi.fn(),
       delete: vi.fn(),
       create: vi.fn(),
+      findByProgramId: vi.fn(),
     } as unknown as BannerRepository;
 
     sut = new UpdateProgramUseCase(programRepository, bannerRepository);
   });
 
   it('should be able to update a program without banner', async () => {
-    const program = makeProgram({
-      bannerId: null,
-    });
+    const program = makeProgram();
 
     programRepository.findById = vi.fn().mockResolvedValue(program);
 
@@ -93,13 +92,13 @@ describe('Update Program', () => {
   });
 
   it('should be able to update a program and remove the banner', async () => {
-    const banner = makeBanner();
-    const program = makeProgram({
-      bannerId: banner.id,
+    const program = makeProgram();
+    const banner = makeBanner({
+      programId: program.id,
     });
 
     programRepository.findById = vi.fn().mockResolvedValue(program);
-    bannerRepository.findById = vi.fn().mockResolvedValue(banner);
+    bannerRepository.findByProgramId = vi.fn().mockResolvedValue(banner);
 
     const deleteBannerSpy = vi.spyOn(bannerRepository, 'delete');
     const createBannerSpy = vi.spyOn(bannerRepository, 'create');
@@ -118,12 +117,11 @@ describe('Update Program', () => {
   });
 
   it('should be able to update a program and create a new banner', async () => {
+    const program = makeProgram();
     const banner = makeBanner();
-    const program = makeProgram({
-      bannerId: null,
-    });
 
     programRepository.findById = vi.fn().mockResolvedValue(program);
+    bannerRepository.findByProgramId = vi.fn().mockResolvedValue(null);
 
     const deleteBannerSpy = vi.spyOn(bannerRepository, 'delete');
     const createBannerSpy = vi.spyOn(bannerRepository, 'create');
@@ -148,15 +146,15 @@ describe('Update Program', () => {
   });
 
   it('should be able to update a program and and update the banner', async () => {
-    const banner = makeBanner();
-    const program = makeProgram({
-      bannerId: banner.id,
+    const program = makeProgram();
+    const banner = makeBanner({
+      programId: program.id,
     });
 
     const newBanner = makeBanner();
 
     programRepository.findById = vi.fn().mockResolvedValue(program);
-    bannerRepository.findById = vi.fn().mockResolvedValue(banner);
+    bannerRepository.findByProgramId = vi.fn().mockResolvedValue(banner);
 
     const deleteBannerSpy = vi.spyOn(bannerRepository, 'delete');
     const createBannerSpy = vi.spyOn(bannerRepository, 'create');
@@ -177,11 +175,6 @@ describe('Update Program', () => {
     expect(result).toBeUndefined();
     expect(deleteBannerSpy).toHaveBeenCalled();
     expect(createBannerSpy).toHaveBeenCalled();
-    expect(programRepository.update).toHaveBeenCalledWith(
-      expect.objectContaining({
-        bannerId: expect.not.toBeOneOf([banner.id]),
-      }),
-    );
     expect(bannerRepository.create).toHaveBeenCalledWith(
       expect.objectContaining({
         name: newBanner.name,

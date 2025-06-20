@@ -8,10 +8,10 @@ export class ProgramsMapper {
       {
         name: raw.name,
         description: raw.description,
-        initialDate: new Date(raw.initialDate),
-        finalDate: new Date(raw.finalDate),
-        createdAt: new Date(raw.createdAt),
-        updatedAt: new Date(raw.updatedAt),
+        initialDate: raw.initialDate,
+        finalDate: raw.finalDate,
+        createdAt: raw.createdAt,
+        updatedAt: raw.updatedAt,
       },
       new UniqueEntityId(raw.id),
     );

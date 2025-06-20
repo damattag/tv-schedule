@@ -48,6 +48,8 @@ export class CreateProgramUseCase {
       });
     }
 
+    await this.programRepository.create(program);
+
     if (banner) {
       const base64 = banner.buffer.toString('base64');
 
@@ -55,13 +57,10 @@ export class CreateProgramUseCase {
         name: banner.name,
         type: banner.type,
         base64,
+        programId: program.id,
       });
 
       await this.bannerRepository.create(bannerEntity);
-
-      program.bannerId = bannerEntity.id;
     }
-
-    await this.programRepository.create(program);
   }
 }

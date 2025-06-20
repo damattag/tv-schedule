@@ -5,7 +5,7 @@ import {
   MaxFileSizeValidator,
   Param,
   ParseFilePipe,
-  Patch,
+  Put,
   UploadedFile,
 } from '@nestjs/common';
 import {
@@ -30,7 +30,7 @@ import {
 export class UpdateProgramController {
   constructor(private readonly updateProgramUseCase: UpdateProgramUseCase) {}
 
-  @Patch('/:id')
+  @Put('/:id')
   @ApiOperation({ summary: 'Update a program' })
   @ApiConsumes('multipart/form-data')
   @ApiParam({
