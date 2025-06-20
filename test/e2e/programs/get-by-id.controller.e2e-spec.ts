@@ -2,27 +2,31 @@ import { INestApplication } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
 import request from 'supertest';
 import { BannerFactory } from 'test/factories/banner.factory';
+import { BasicTokenFactory } from 'test/factories/basic-toke.factory';
 import { ProgramFactory } from 'test/factories/program.factory';
 import { AppModule } from '@/infra/app.module';
 import { DatabaseModule } from '@/infra/database/database.module';
 import { PrismaService } from '@/infra/database/prisma/prisma.service';
+import { EnvModule } from '@/infra/env';
 
 describe('Get program by id (E2E)', () => {
   let app: INestApplication;
   let prisma: PrismaService;
   let programFactory: ProgramFactory;
   let bannerFactory: BannerFactory;
+  let basicTokenFactory: BasicTokenFactory;
 
   beforeAll(async () => {
     const moduleRef = await Test.createTestingModule({
-      imports: [AppModule, DatabaseModule],
-      providers: [ProgramFactory, BannerFactory],
+      imports: [AppModule, DatabaseModule, EnvModule],
+      providers: [ProgramFactory, BannerFactory, BasicTokenFactory],
     }).compile();
 
     app = moduleRef.createNestApplication();
     prisma = moduleRef.get(PrismaService);
     programFactory = moduleRef.get(ProgramFactory);
     bannerFactory = moduleRef.get(BannerFactory);
+    basicTokenFactory = moduleRef.get(BasicTokenFactory);
 
     await app.init();
   });
@@ -57,12 +61,13 @@ describe('Get program by id (E2E)', () => {
     const formattedInitialTime = initialTime.split(':').slice(0, 2).join(':');
     const formattedFinalTime = finalTime.split(':').slice(0, 2).join(':');
 
-    const response = await request(app.getHttpServer()).get(
-      `/programs/${program.id.toString()}`,
-    );
+    const basicAuth = basicTokenFactory.makeToken();
+
+    const response = await request(app.getHttpServer())
+      .get(`/programs/${program.id.toString()}`)
+      .set('Authorization', `Basic ${basicAuth}`);
 
     expect(response.status).toBe(200);
-
     expect(response.body.data).toEqual(
       expect.objectContaining({
         id: program.id.toString(),
