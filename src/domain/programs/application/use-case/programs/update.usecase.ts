@@ -64,10 +64,12 @@ export class UpdateProgramUseCase {
     }
 
     if (banner) {
+      const base64 = banner.buffer.toString('base64');
+
       const bannerEntity = BannerEntity.create({
         name: banner.name,
         type: banner.type,
-        base64: banner.base64,
+        base64,
       });
 
       await this.bannerRepository.create(bannerEntity);

@@ -1,4 +1,13 @@
-import { Body, Controller, Param, Patch } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  FileTypeValidator,
+  MaxFileSizeValidator,
+  Param,
+  ParseFilePipe,
+  Patch,
+  UploadedFile,
+} from '@nestjs/common';
 import { ApiBody, ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
 import { UpdateProgramUseCase } from '@/domain/programs/application/use-case';
 import { SwaggerTags } from '@/infra/config/docs';
@@ -24,7 +33,17 @@ export class UpdateProgramController {
   })
   @ApiBody({ schema: updateProgramBodySwaggerSchema })
   async handle(
-    @Param(updateProgramParamsValidationPipe) params: UpdateProgramParams,
+    @UploadedFile(
+      new ParseFilePipe({
+        validators: [
+          new MaxFileSizeValidator({ maxSize: 1024 * 1024 * 5 }), // 5MB
+          new FileTypeValidator({ fileType: '.(png|jpg)' }),
+        ],
+      }),
+    )
+    file: Express.Multer.File,
+    @Param(updateProgramParamsValidationPipe)
+    params: UpdateProgramParams,
     @Body(updateProgramBodyValidationPipe) body: UpdateProgramBody,
   ): Promise<void> {
     return this.updateProgramUseCase.execute({
@@ -32,6 +51,11 @@ export class UpdateProgramController {
       ...body,
       initialDate: body.initial_date,
       finalDate: body.final_date,
+      banner: {
+        buffer: file.buffer,
+        type: file.mimetype,
+        name: file.originalname,
+      },
     });
   }
 }

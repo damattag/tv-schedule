@@ -4,7 +4,7 @@ export interface ProgramDetailsProps {
   programId: UniqueEntityId;
   name: string;
   description: string;
-  exibitionDate: string;
+  exhibitionDate: string;
   initialTime: string;
   finalTime: string;
   bannerBase64: string | null;
@@ -25,8 +25,8 @@ export class ProgramDetailsEntity {
     return this.props.description;
   }
 
-  get exibitionDate(): string {
-    return this.props.exibitionDate;
+  get exhibitionDate(): string {
+    return this.props.exhibitionDate;
   }
 
   get initialTime(): string {

@@ -6,7 +6,7 @@ export class ProgramDetailsPresenter {
       id: program.programId.toString(),
       name: program.name,
       description: program.description,
-      exhibition_date: program.exibitionDate,
+      exhibition_date: program.exhibitionDate,
       start_time: program.initialTime,
       end_time: program.finalTime,
       banner_base64: program.bannerBase64,

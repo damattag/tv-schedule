@@ -1,4 +1,7 @@
-import { Banner as PrismaBanner, Program as PrismaProgram } from '@prisma/client';
+import {
+  Banner as PrismaBanner,
+  Program as PrismaProgram,
+} from '@prisma/client';
 import { UniqueEntityId } from '@/core/entities';
 import { ProgramDetailsEntity } from '@/domain/programs/enterprise/entities/value-objects/program-details';
 
@@ -12,7 +15,7 @@ export class ProgramDetailsMapper {
 
     const bannerBase64 = banner?.base64 ?? null;
 
-    const exibitionDate = initialDate.toISOString().split('T')[0];
+    const exhibitionDate = initialDate.toISOString().split('T')[0];
 
     const initialTime = initialDate.toISOString().split('T')[1].split('.')[0];
     const finalTime = finalDate.toISOString().split('T')[1].split('.')[0];
@@ -24,7 +27,7 @@ export class ProgramDetailsMapper {
       programId: new UniqueEntityId(id),
       name,
       description,
-      exibitionDate,
+      exhibitionDate,
       initialTime: formattedInitialTime,
       finalTime: formattedFinalTime,
       bannerBase64,

@@ -1,9 +1,15 @@
+import { makeBanner } from 'test/factories/banner.factory';
 import { makeProgram } from 'test/factories/program.factory';
+import { UniqueEntityId } from '@/core/entities';
 import { ConflictException, InvalidInputException } from '@/core/exceptions';
-import { ProgramRepository } from '@/domain/programs/application/repositories';
+import {
+  BannerRepository,
+  ProgramRepository,
+} from '@/domain/programs/application/repositories';
 import { CreateProgramUseCase } from '@/domain/programs/application/use-case/programs/create.usecase';
 
 let programRepository: ProgramRepository;
+let bannerRepository: BannerRepository;
 let sut: CreateProgramUseCase;
 
 const ONE_MINUTE_IN_MS = 60 * 1000;
@@ -15,22 +21,81 @@ describe('Create Program', () => {
       list: vi.fn(),
     } as unknown as ProgramRepository;
 
-    sut = new CreateProgramUseCase(programRepository);
+    bannerRepository = {
+      create: vi.fn(),
+    } as unknown as BannerRepository;
+
+    sut = new CreateProgramUseCase(programRepository, bannerRepository);
   });
 
-  it('should be able to create a program', async () => {
+  it('should be able to create a program without banner', async () => {
+    const program = makeProgram();
+
     programRepository.list = vi.fn().mockResolvedValue([]);
 
+    const createProgramSpy = vi.spyOn(programRepository, 'create');
+    const createBannerSpy = vi.spyOn(bannerRepository, 'create');
+
     const result = await sut.execute({
-      name: 'Test Program',
-      description: 'Test Description',
-      initialDate: new Date(),
-      finalDate: new Date(Date.now() + ONE_MINUTE_IN_MS),
+      name: program.name,
+      description: program.description,
+      initialDate: program.initialDate,
+      finalDate: program.finalDate,
     });
 
-    expect(result.program).toBeDefined();
-    expect(result.program.name).toBe('Test Program');
-    expect(result.program.description).toBe('Test Description');
+    expect(result).toBeUndefined();
+    expect(createProgramSpy).toHaveBeenCalled();
+    expect(createBannerSpy).not.toHaveBeenCalled();
+    expect(programRepository.create).toHaveBeenCalledWith(
+      expect.objectContaining({
+        name: program.name,
+        description: program.description,
+        initialDate: program.initialDate,
+        finalDate: program.finalDate,
+      }),
+    );
+  });
+
+  it('should be able to create a program with banner', async () => {
+    const program = makeProgram();
+    const banner = makeBanner();
+
+    programRepository.list = vi.fn().mockResolvedValue([]);
+
+    const createProgramSpy = vi.spyOn(programRepository, 'create');
+    const createBannerSpy = vi.spyOn(bannerRepository, 'create');
+
+    const result = await sut.execute({
+      name: program.name,
+      description: program.description,
+      initialDate: program.initialDate,
+      finalDate: program.finalDate,
+      banner: {
+        buffer: Buffer.from(banner.base64, 'base64'),
+        type: banner.type,
+        name: banner.name,
+      },
+    });
+
+    expect(result).toBeUndefined();
+    expect(createProgramSpy).toHaveBeenCalled();
+    expect(createBannerSpy).toHaveBeenCalled();
+    expect(programRepository.create).toHaveBeenCalledWith(
+      expect.objectContaining({
+        name: program.name,
+        description: program.description,
+        initialDate: program.initialDate,
+        finalDate: program.finalDate,
+        bannerId: expect.any(UniqueEntityId),
+      }),
+    );
+    expect(bannerRepository.create).toHaveBeenCalledWith(
+      expect.objectContaining({
+        name: banner.name,
+        type: banner.type,
+        base64: banner.base64,
+      }),
+    );
   });
 
   it('should not be able to create a program with initial date greater than final date', async () => {

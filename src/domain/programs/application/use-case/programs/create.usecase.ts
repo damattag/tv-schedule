@@ -5,7 +5,10 @@ import {
   BannerRepository,
   ProgramRepository,
 } from '@/domain/programs/application/repositories';
-import { BannerEntity, ProgramEntity } from '@/domain/programs/enterprise/entities';
+import {
+  BannerEntity,
+  ProgramEntity,
+} from '@/domain/programs/enterprise/entities';
 
 interface CreateProgramRequest {
   name: string;
@@ -29,7 +32,10 @@ export class CreateProgramUseCase {
 
     const program = ProgramEntity.create(input);
 
-    const alreadyExists = await this.programRepository.list({ initialDate, finalDate });
+    const alreadyExists = await this.programRepository.list({
+      initialDate,
+      finalDate,
+    });
 
     if (alreadyExists.length) {
       throw new ConflictException({
@@ -43,10 +49,12 @@ export class CreateProgramUseCase {
     }
 
     if (banner) {
+      const base64 = banner.buffer.toString('base64');
+
       const bannerEntity = BannerEntity.create({
         name: banner.name,
         type: banner.type,
-        base64: banner.base64,
+        base64,
       });
 
       await this.bannerRepository.create(bannerEntity);
