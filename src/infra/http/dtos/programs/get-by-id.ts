@@ -28,6 +28,7 @@ export const getProgramByIdSchema = z.object({
     .string()
     .nullable()
     .describe('The banner url of the program'),
+  banner_type: z.enum(['image/png', 'image/jpg']).describe('The banner type'),
 });
 
 const getProgramByIdResponseSchema = oneResponse(getProgramByIdSchema);

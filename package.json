@@ -11,7 +11,7 @@
     "start": "nest start",
     "start:dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
-    "start:prod": "node dist/main && pnpm prisma:migration:push",
+    "start:prod": "pnpm prisma:migration:push && node dist/main",
     "lint": "npx @biomejs/biome check --write ./src",
     "lint:ci": "npx biome ci ./src",
     "types:check": "tsc --noEmit",

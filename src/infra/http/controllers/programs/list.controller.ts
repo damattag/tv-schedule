@@ -1,11 +1,18 @@
-import { Controller, Get, Query } from '@nestjs/common';
-import { ApiBasicAuth, ApiOperation, ApiQuery, ApiTags } from '@nestjs/swagger';
+import { Controller, Get, HttpCode, HttpStatus, Query } from '@nestjs/common';
+import {
+  ApiBasicAuth,
+  ApiOkResponse,
+  ApiOperation,
+  ApiQuery,
+  ApiTags,
+} from '@nestjs/swagger';
 import { ListProgramsUseCase } from '@/domain/programs/application/use-case';
 import { SwaggerTags } from '@/infra/config/docs';
 import {
   ListProgramsQueryParams,
   ListProgramsResponse,
   listProgramsQueryParamsValidationPipe,
+  listProgramsResponseSwaggerSchema,
 } from '@/infra/http/dtos/programs';
 import { ProgramDetailsPresenter } from '@/infra/http/presenters';
 
@@ -30,6 +37,11 @@ export class ListProgramsController {
     schema: { type: 'string', format: 'date-time' },
     required: false,
   })
+  @ApiOkResponse({
+    schema: listProgramsResponseSwaggerSchema,
+    description: 'List of programs',
+  })
+  @HttpCode(HttpStatus.OK)
   async handle(
     @Query(listProgramsQueryParamsValidationPipe)
     queryRaw: ListProgramsQueryParams,

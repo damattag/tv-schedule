@@ -43,7 +43,7 @@ FROM base AS runner
 
 RUN apk add dumb-init
 
-ENV NODE_ENV='production'
+ENV NODE_ENV='development'
 
 USER node
 
