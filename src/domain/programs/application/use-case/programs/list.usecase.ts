@@ -6,12 +6,17 @@ interface ListProgramsRequest {
   search?: string;
   initialDate?: Date;
   finalDate?: Date;
-  page?: number;
-  limit?: number;
+  page: number;
+  limit: number;
 }
 
 interface ListProgramsResponse {
   programs: ProgramDetailsEntity[];
+  meta: {
+    page: number;
+    listed: number;
+    total: number;
+  };
 }
 
 @Injectable()
@@ -19,8 +24,14 @@ export class ListProgramsUseCase {
   constructor(private readonly programRepository: ProgramRepository) {}
 
   async execute(input: ListProgramsRequest): Promise<ListProgramsResponse> {
-    const programs = await this.programRepository.listWithDetails(input);
+    const [programs, total] = await Promise.all([
+      this.programRepository.listWithDetails(input),
+      this.programRepository.count(input),
+    ]);
 
-    return { programs };
+    return {
+      programs,
+      meta: { page: input.page, listed: programs.length, total },
+    };
   }
 }

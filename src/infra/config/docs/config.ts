@@ -14,6 +14,10 @@ type GenerateSwaggerConfigInput = {
   host?: string;
 };
 
+export enum SwaggerTags {
+  PROGRAMS = 'Programs',
+}
+
 export const generateSwaggerConfig = (input: GenerateSwaggerConfigInput) => {
   const { apiPort, environment, jsonDocumentUrl, host = 'http://localhost' } = input;
 

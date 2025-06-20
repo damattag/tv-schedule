@@ -4,7 +4,7 @@ import {
   BannerRepository,
   ProgramRepository,
 } from '@/domain/programs/application/repositories';
-import { BannerEntity, ProgramEntity } from '@/domain/programs/enterprise/entities';
+import { BannerEntity } from '@/domain/programs/enterprise/entities';
 
 interface UpdateProgramRequest {
   id: string;
@@ -15,9 +15,7 @@ interface UpdateProgramRequest {
   banner?: FileInput;
 }
 
-interface UpdateProgramResponse {
-  program: ProgramEntity;
-}
+type UpdateProgramResponse = void;
 
 @Injectable()
 export class UpdateProgramUseCase {
@@ -78,7 +76,5 @@ export class UpdateProgramUseCase {
     }
 
     await this.programRepository.update(program);
-
-    return { program };
   }
 }

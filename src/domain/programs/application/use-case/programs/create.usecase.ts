@@ -15,9 +15,7 @@ interface CreateProgramRequest {
   banner?: FileInput;
 }
 
-interface CreateProgramResponse {
-  program: ProgramEntity;
-}
+type CreateProgramResponse = void;
 
 @Injectable()
 export class CreateProgramUseCase {
@@ -57,7 +55,5 @@ export class CreateProgramUseCase {
     }
 
     await this.programRepository.create(program);
-
-    return { program };
   }
 }

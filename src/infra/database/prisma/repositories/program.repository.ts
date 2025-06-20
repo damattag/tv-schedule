@@ -6,7 +6,10 @@ import {
 } from '@/domain/programs/application/repositories';
 import { ProgramEntity } from '@/domain/programs/enterprise/entities';
 import { ProgramDetailsEntity } from '@/domain/programs/enterprise/entities/value-objects/program-details';
-import { ProgramDetailsMapper, ProgramsMapper } from '@/infra/database/prisma/mappers';
+import {
+  ProgramDetailsMapper,
+  ProgramsMapper,
+} from '@/infra/database/prisma/mappers';
 import { PrismaService } from '@/infra/database/prisma/prisma.service';
 
 @Injectable()
@@ -50,7 +53,10 @@ export class PrismaProgramRepository implements ProgramRepository {
   async update(program: ProgramEntity): Promise<void> {
     const data = ProgramsMapper.toPrisma(program);
 
-    await this.prisma.program.update({ where: { id: program.id.toString() }, data });
+    await this.prisma.program.update({
+      where: { id: program.id.toString() },
+      data,
+    });
   }
 
   async delete(id: string): Promise<void> {
@@ -72,7 +78,9 @@ export class PrismaProgramRepository implements ProgramRepository {
     return ProgramDetailsMapper.toDomain(program);
   }
 
-  async listWithDetails(input: ProgramFilters): Promise<ProgramDetailsEntity[]> {
+  async listWithDetails(
+    input: ProgramFilters,
+  ): Promise<ProgramDetailsEntity[]> {
     const programs = await this.prisma.program.findMany({
       where: this.buildWhere(input),
       include: { banner: true },
@@ -81,12 +89,21 @@ export class PrismaProgramRepository implements ProgramRepository {
     return programs.map(ProgramDetailsMapper.toDomain);
   }
 
+  async count(input: ProgramFilters): Promise<number> {
+    return this.prisma.program.count({
+      where: this.buildWhere(input),
+    });
+  }
+
   private buildWhere(input: ProgramFilters): Prisma.ProgramWhereInput {
     const { search, initialDate, finalDate } = input;
 
     return {
       ...(search && {
-        OR: [{ name: { contains: search } }, { description: { contains: search } }],
+        OR: [
+          { name: { contains: search } },
+          { description: { contains: search } },
+        ],
       }),
       ...(initialDate && !finalDate && { initialDate: { gte: initialDate } }),
       ...(finalDate && !initialDate && { finalDate: { lte: finalDate } }),
@@ -116,7 +133,10 @@ export class PrismaProgramRepository implements ProgramRepository {
     };
   }
 
-  private buildSkip(page?: number, limit?: number): Prisma.ProgramFindManyArgs['skip'] {
+  private buildSkip(
+    page?: number,
+    limit?: number,
+  ): Prisma.ProgramFindManyArgs['skip'] {
     if (!page || !limit) {
       return undefined;
     }

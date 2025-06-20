@@ -14,6 +14,9 @@ export abstract class ProgramRepository {
   abstract list(filters?: ProgramFilters): Promise<ProgramEntity[]>;
   abstract update(program: ProgramEntity): Promise<void>;
   abstract delete(id: string): Promise<void>;
+  abstract count(filters?: ProgramFilters): Promise<number>;
   abstract getDetails(id: string): Promise<ProgramDetailsEntity | null>;
-  abstract listWithDetails(filters?: ProgramFilters): Promise<ProgramDetailsEntity[]>;
+  abstract listWithDetails(
+    filters?: ProgramFilters,
+  ): Promise<ProgramDetailsEntity[]>;
 }
