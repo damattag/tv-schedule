@@ -10,7 +10,6 @@ export default defineConfig({
       ...defaultExclude,
       '**/index.ts',
       '**/config.ts',
-      '**/test/*',
       '**/*.module.ts',
       '**/*.d.ts',
     ],

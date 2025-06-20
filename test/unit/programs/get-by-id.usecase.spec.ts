@@ -1,7 +1,7 @@
 import { makeProgram } from 'test/factories/program.factory';
 import { NotFoundException } from '@/core/exceptions';
 import { ProgramRepository } from '@/domain/programs/application/repositories';
-import { GetProgramByIdUseCase } from './get-by-id.usecase';
+import { GetProgramByIdUseCase } from '@/domain/programs/application/use-case/programs/get-by-id.usecase';
 
 let programRepository: ProgramRepository;
 let sut: GetProgramByIdUseCase;

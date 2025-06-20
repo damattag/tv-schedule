@@ -6,10 +6,42 @@
 
 generator client {
   provider = "prisma-client-js"
-  output   = "../generated/prisma"
+  output   = "./generated/prisma"
 }
 
 datasource db {
   provider = "mysql"
   url      = env("DATABASE_URL")
+}
+
+model Program {
+  id String @id @default(uuid())
+
+  name        String
+  description String
+  initialDate DateTime
+  finalDate   DateTime
+  bannerId    String?  @unique
+
+  banner Banner? @relation(fields: [bannerId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("programs")
+}
+
+model Banner {
+  id String @id @default(uuid())
+
+  name   String
+  type   String
+  base64 String
+
+  program Program?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("banners")
 }

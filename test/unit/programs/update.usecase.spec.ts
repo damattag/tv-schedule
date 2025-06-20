@@ -2,7 +2,7 @@ import { NotFoundException } from '@nestjs/common';
 import { makeProgram } from 'test/factories/program.factory';
 import { InvalidInputException } from '@/core/exceptions';
 import { ProgramRepository } from '@/domain/programs/application/repositories';
-import { UpdateProgramUseCase } from './update.usecase';
+import { UpdateProgramUseCase } from '@/domain/programs/application/use-case/programs/update.usecase';
 
 describe('Update Program', () => {
   let programRepository: ProgramRepository;

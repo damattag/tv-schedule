@@ -1,7 +1,7 @@
 import { makeProgram } from 'test/factories/program.factory';
 import { NotFoundException } from '@/core/exceptions';
 import { ProgramRepository } from '@/domain/programs/application/repositories';
-import { DeleteProgramUseCase } from './delete.usecase';
+import { DeleteProgramUseCase } from '@/domain/programs/application/use-case/programs/delete.usecase';
 
 describe('Delete Program', () => {
   let sut: DeleteProgramUseCase;
