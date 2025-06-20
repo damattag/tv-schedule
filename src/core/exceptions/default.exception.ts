@@ -22,6 +22,7 @@ export class DefaultException extends Error implements DefaultExceptionProps {
     super(message);
     this.name = code;
     this.status = status;
+    this.code = code;
     this.data = data;
   }
 }

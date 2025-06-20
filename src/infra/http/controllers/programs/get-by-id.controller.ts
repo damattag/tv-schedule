@@ -1,11 +1,17 @@
-import { Controller, Get, Param } from '@nestjs/common';
-import { ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
+import { Controller, Get, HttpCode, HttpStatus, Param } from '@nestjs/common';
+import {
+  ApiOkResponse,
+  ApiOperation,
+  ApiParam,
+  ApiTags,
+} from '@nestjs/swagger';
 import { GetProgramByIdUseCase } from '@/domain/programs/application/use-case';
 import { SwaggerTags } from '@/infra/config/docs';
 import {
   GetProgramByIdParams,
   GetProgramByIdResponse,
   getProgramByIdParamsValidationPipe,
+  getProgramByIdResponseSwaggerSchema,
 } from '@/infra/http/dtos/programs';
 import { ProgramDetailsPresenter } from '@/infra/http/presenters';
 
@@ -21,6 +27,11 @@ export class GetProgramByIdController {
     schema: { type: 'string', format: 'uuid' },
     required: true,
   })
+  @ApiOkResponse({
+    description: 'Program retrieved successfully',
+    schema: getProgramByIdResponseSwaggerSchema,
+  })
+  @HttpCode(HttpStatus.OK)
   async handle(
     @Param(getProgramByIdParamsValidationPipe) params: GetProgramByIdParams,
   ): Promise<GetProgramByIdResponse> {

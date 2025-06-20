@@ -40,29 +40,32 @@ export class UpdateProgramController {
   })
   @ApiBody({ schema: updateProgramBodySwaggerSchema })
   async handle(
+    @Param(updateProgramParamsValidationPipe)
+    params: UpdateProgramParams,
+    @Body(updateProgramBodyValidationPipe) body: UpdateProgramBody,
     @UploadedFile(
       new ParseFilePipe({
         validators: [
           new MaxFileSizeValidator({ maxSize: 1024 * 1024 * 5 }), // 5MB
           new FileTypeValidator({ fileType: '.(png|jpg)' }),
         ],
+        fileIsRequired: false,
       }),
     )
-    file: Express.Multer.File,
-    @Param(updateProgramParamsValidationPipe)
-    params: UpdateProgramParams,
-    @Body(updateProgramBodyValidationPipe) body: UpdateProgramBody,
+    file?: Express.Multer.File,
   ): Promise<void> {
     return this.updateProgramUseCase.execute({
       id: params.id,
       ...body,
       initialDate: body.initial_date,
       finalDate: body.final_date,
-      banner: {
-        buffer: file.buffer,
-        type: file.mimetype,
-        name: file.originalname,
-      },
+      banner: file
+        ? {
+            buffer: file.buffer,
+            type: file.mimetype,
+            name: file.originalname,
+          }
+        : undefined,
     });
   }
 }

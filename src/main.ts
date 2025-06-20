@@ -5,6 +5,7 @@ import { AppModule } from '@/infra/app.module';
 import { AppEnvironment, corsOptions } from '@/infra/config/cors';
 import { openApi } from '@/infra/config/docs';
 import { EnvService } from '@/infra/env';
+import { DefaultFilter } from './infra/exceptions';
 
 let app: INestApplication | null = null;
 
@@ -24,10 +25,15 @@ async function bootstrap() {
 
   app.useGlobalPipes(new ValidationPipe({ transform: true }));
 
+  app.useGlobalFilters(new DefaultFilter());
+
   app.enableShutdownHooks();
 
   await app.listen(appPort, () => {
-    Logger.log(`Server running on http://localhost:${appPort}`, 'NestApplication');
+    Logger.log(
+      `Server running on http://localhost:${appPort}`,
+      'NestApplication',
+    );
 
     if (appEnv !== AppEnvironment.PRODUCTION) {
       Logger.log(
