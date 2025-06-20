@@ -17,8 +17,9 @@ COPY --chown=node:node package*.json ./
 COPY --chown=node:node pnpm-lock.yaml ./
 COPY --chown=node:node prisma/schema.prisma ./
 
-RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --prod --frozen-lockfile
-RUN npx prisma generate
+RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --prod
+
+RUN pnpm prisma:generate
 
 # -------------->
 FROM base AS builder
@@ -32,7 +33,8 @@ COPY --chown=node:node package*.json tsconfig.json ./
 COPY --chown=node:node src src/
 
 RUN pnpm install
-RUN npx prisma generate
+
+RUN pnpm prisma:generate
 
 RUN pnpm run build
 
@@ -55,4 +57,4 @@ COPY --chown=node:node package.json ./
 
 EXPOSE 3001
 
-CMD ["dumb-init", "node", "dist/infra/main.js"]
+CMD ["dumb-init", "node", "dist/main.js"]
