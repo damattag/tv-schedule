@@ -1,7 +1,10 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { FileInput } from '@/core/types/file';
-import { ProgramRepository } from '@/domain/programs/application/repositories';
-import { ProgramEntity } from '@/domain/programs/enterprise/entities';
+import {
+  BannerRepository,
+  ProgramRepository,
+} from '@/domain/programs/application/repositories';
+import { BannerEntity, ProgramEntity } from '@/domain/programs/enterprise/entities';
 
 interface UpdateProgramRequest {
   id: string;
@@ -18,10 +21,13 @@ interface UpdateProgramResponse {
 
 @Injectable()
 export class UpdateProgramUseCase {
-  constructor(private readonly programRepository: ProgramRepository) {}
+  constructor(
+    private readonly programRepository: ProgramRepository,
+    private readonly bannerRepository: BannerRepository,
+  ) {}
 
   async execute(input: UpdateProgramRequest): Promise<UpdateProgramResponse> {
-    const { id, name, description, initialDate, finalDate } = input;
+    const { id, name, description, initialDate, finalDate, banner } = input;
 
     const program = await this.programRepository.findById(id);
 
@@ -39,6 +45,37 @@ export class UpdateProgramUseCase {
     program.description = description;
     program.initialDate = initialDate;
     program.finalDate = finalDate;
+
+    if (program.bannerId) {
+      const currentBanner = await this.bannerRepository.findById(
+        program.bannerId.toString(),
+      );
+
+      if (!currentBanner) {
+        throw new NotFoundException({
+          message: 'Banner not found',
+          code: 'BANNER_NOT_FOUND',
+          data: {
+            id: program.bannerId.toString(),
+          },
+        });
+      }
+
+      program.bannerId = null;
+      await this.bannerRepository.delete(currentBanner.id.toString());
+    }
+
+    if (banner) {
+      const bannerEntity = BannerEntity.create({
+        name: banner.name,
+        type: banner.type,
+        base64: banner.base64,
+      });
+
+      await this.bannerRepository.create(bannerEntity);
+
+      program.bannerId = bannerEntity.id;
+    }
 
     await this.programRepository.update(program);
 

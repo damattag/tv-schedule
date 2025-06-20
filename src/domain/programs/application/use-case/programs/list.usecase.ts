@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { ProgramRepository } from '@/domain/programs/application/repositories';
-import { ProgramEntity } from '@/domain/programs/enterprise/entities';
+import { ProgramDetailsEntity } from '@/domain/programs/enterprise/entities/value-objects/program-details';
 
 interface ListProgramsRequest {
   search?: string;
@@ -11,7 +11,7 @@ interface ListProgramsRequest {
 }
 
 interface ListProgramsResponse {
-  programs: ProgramEntity[];
+  programs: ProgramDetailsEntity[];
 }
 
 @Injectable()
@@ -19,7 +19,7 @@ export class ListProgramsUseCase {
   constructor(private readonly programRepository: ProgramRepository) {}
 
   async execute(input: ListProgramsRequest): Promise<ListProgramsResponse> {
-    const programs = await this.programRepository.list(input);
+    const programs = await this.programRepository.listWithDetails(input);
 
     return { programs };
   }

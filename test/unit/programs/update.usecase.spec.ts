@@ -28,14 +28,12 @@ describe('Update Program', () => {
       description: 'Test Description',
       initialDate: program.initialDate,
       finalDate: program.finalDate,
-      bannerId: program.bannerId,
     });
 
     expect(result.program.name).toBe('Test Program');
     expect(result.program.description).toBe('Test Description');
     expect(result.program.initialDate).toBe(program.initialDate);
     expect(result.program.finalDate).toBe(program.finalDate);
-    expect(result.program.bannerId).toBe(program.bannerId);
   });
 
   it('should not be able to update a program if the program does not exist', async () => {
@@ -48,7 +46,6 @@ describe('Update Program', () => {
         description: 'Test Description',
         initialDate: new Date(),
         finalDate: new Date(),
-        bannerId: null,
       }),
     ).rejects.toBeInstanceOf(NotFoundException);
   });
@@ -65,7 +62,6 @@ describe('Update Program', () => {
         description: 'Test Description',
         initialDate: new Date(Date.now() + 1000),
         finalDate: new Date(),
-        bannerId: null,
       }),
     ).rejects.toBeInstanceOf(InvalidInputException);
   });
@@ -81,7 +77,6 @@ describe('Update Program', () => {
       description: 'Test Description',
       initialDate: program.initialDate,
       finalDate: program.finalDate,
-      bannerId: null,
     });
 
     expect(result.program.bannerId).toBe(null);

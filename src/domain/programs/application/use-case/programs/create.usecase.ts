@@ -1,8 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { ConflictException } from '@/core/exceptions';
 import { FileInput } from '@/core/types/file';
-import { ProgramRepository } from '@/domain/programs/application/repositories';
-import { ProgramEntity } from '@/domain/programs/enterprise/entities';
+import {
+  BannerRepository,
+  ProgramRepository,
+} from '@/domain/programs/application/repositories';
+import { BannerEntity, ProgramEntity } from '@/domain/programs/enterprise/entities';
 
 interface CreateProgramRequest {
   name: string;
@@ -18,10 +21,13 @@ interface CreateProgramResponse {
 
 @Injectable()
 export class CreateProgramUseCase {
-  constructor(private readonly programRepository: ProgramRepository) {}
+  constructor(
+    private readonly programRepository: ProgramRepository,
+    private readonly bannerRepository: BannerRepository,
+  ) {}
 
   async execute(input: CreateProgramRequest): Promise<CreateProgramResponse> {
-    const { initialDate, finalDate } = input;
+    const { initialDate, finalDate, banner } = input;
 
     const program = ProgramEntity.create(input);
 
@@ -36,6 +42,18 @@ export class CreateProgramUseCase {
           finalDate,
         },
       });
+    }
+
+    if (banner) {
+      const bannerEntity = BannerEntity.create({
+        name: banner.name,
+        type: banner.type,
+        base64: banner.base64,
+      });
+
+      await this.bannerRepository.create(bannerEntity);
+
+      program.bannerId = bannerEntity.id;
     }
 
     await this.programRepository.create(program);

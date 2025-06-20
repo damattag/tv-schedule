@@ -7,7 +7,7 @@ export interface ProgramProps {
   description: string;
   initialDate: Date;
   finalDate: Date;
-  bannerId?: string | null;
+  bannerId?: UniqueEntityId | null;
   createdAt: Date;
   updatedAt?: Date | null;
 }
@@ -31,8 +31,16 @@ export class ProgramEntity extends Entity<ProgramProps> {
     return this.props.finalDate;
   }
 
-  get bannerId(): string | null {
+  get bannerId(): UniqueEntityId | null {
     return this.props.bannerId ?? null;
+  }
+
+  get createdAt() {
+    return this.props.createdAt;
+  }
+
+  get updatedAt() {
+    return this.props.updatedAt;
   }
 
   set name(value: string) {
@@ -61,7 +69,7 @@ export class ProgramEntity extends Entity<ProgramProps> {
     this.touch();
   }
 
-  set bannerId(value: string | null) {
+  set bannerId(value: UniqueEntityId | null) {
     this.props.bannerId = value;
     this.touch();
   }

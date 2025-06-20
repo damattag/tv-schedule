@@ -1,14 +1,14 @@
 import { Injectable } from '@nestjs/common';
 import { NotFoundException } from '@/core/exceptions';
 import { ProgramRepository } from '@/domain/programs/application/repositories';
-import { ProgramEntity } from '@/domain/programs/enterprise/entities';
+import { ProgramDetailsEntity } from '@/domain/programs/enterprise/entities/value-objects/program-details';
 
 interface GetProgramByIdRequest {
   id: string;
 }
 
 interface GetProgramByIdResponse {
-  program: ProgramEntity;
+  program: ProgramDetailsEntity;
 }
 
 @Injectable()
@@ -16,7 +16,7 @@ export class GetProgramByIdUseCase {
   constructor(private readonly programRepository: ProgramRepository) {}
 
   async execute(input: GetProgramByIdRequest): Promise<GetProgramByIdResponse> {
-    const program = await this.programRepository.findById(input.id);
+    const program = await this.programRepository.getDetails(input.id);
 
     if (!program) {
       throw new NotFoundException({
