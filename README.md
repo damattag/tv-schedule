@@ -1,36 +1,38 @@
 # TV Schedule API
 
-A modern and scalable TV program scheduling API built with NestJS, Prisma, and MySQL. This application provides a robust backend for managing TV programs, their schedules, and related media content.
+A modern and scalable TV program scheduling API built with NestJS, Prisma, and MySQL. This application provides a robust backend for managing TV programs, their schedules, and related media content. Built with clean architecture principles, it offers a reliable solution for TV networks and streaming platforms to manage their program schedules efficiently.
 
 ## 🚀 Features
 
-- TV Program Management
-- Program Banner Management
-- RESTful API with Swagger Documentation
-- Clean Architecture Implementation
-- Comprehensive Test Coverage
-- Docker Support
-- Database Migrations
-- Basic Authentication
+- **TV Program Management**: Create, read, update, and delete TV programs
+- **Program Banner Management**: Handle program images and media assets
+- **RESTful API**: Well-documented endpoints with Swagger/OpenAPI
+- **Clean Architecture**: Organized in layers for better maintainability and testing
+- **Authentication**: Basic auth implementation for secure access
+- **Comprehensive Testing**: Unit and E2E tests with high coverage
+- **Docker Support**: Easy deployment with containerization
+- **Database Migrations**: Version-controlled database schema
+- **Input Validation**: Request validation using Zod
+- **Error Handling**: Standardized error responses
 
 ## 🛠 Tech Stack
 
-- **Framework**: NestJS 11
-- **Database**: MySQL 8.4
-- **ORM**: Prisma 6.5
-- **Testing**: Vitest
-- **Documentation**: Swagger/OpenAPI
-- **Package Manager**: pnpm
-- **Code Quality**: Biome
-- **Container**: Docker & Docker Compose
+- **Framework**: [NestJS](https://nestjs.com/) 11
+- **Database**: [MySQL](https://www.mysql.com/) 8.4
+- **ORM**: [Prisma](https://www.prisma.io/) 6.5
+- **Testing**: [Vitest](https://vitest.dev/)
+- **Documentation**: [Swagger/OpenAPI](https://swagger.io/)
+- **Package Manager**: [pnpm](https://pnpm.io/)
+- **Code Quality**: [Biome](https://biomejs.dev/)
+- **Container**: [Docker](https://www.docker.com/) & Docker Compose
 
 ## 📋 Prerequisites
 
 Before you begin, ensure you have the following installed:
-- Node.js (LTS version)
-- pnpm (`npm install -g pnpm`)
-- Docker and Docker Compose
-- MySQL (if running locally without Docker)
+- [Node.js](https://nodejs.org/) (LTS version)
+- [pnpm](https://pnpm.io/) (`npm install -g pnpm`)
+- [Docker](https://www.docker.com/) and Docker Compose
+- [MySQL](https://www.mysql.com/) (if running locally without Docker)
 
 ## 🔧 Environment Setup
 
@@ -71,6 +73,8 @@ Before you begin, ensure you have the following installed:
    docker-compose --profile development up -d
    ```
 
+2. The API will be available at `http://localhost:3001`
+
 ### Local Development
 
 1. Start only the database:
@@ -88,7 +92,18 @@ Before you begin, ensure you have the following installed:
    pnpm start:dev
    ```
 
-The API will be available at `http://localhost:3001`
+## 📝 API Endpoints
+
+The API provides the following main endpoints:
+
+### Programs
+- `GET /programs` - List all programs with pagination
+- `GET /programs/:id` - Get program details by ID
+- `POST /programs` - Create a new program
+- `PUT /programs/:id` - Update an existing program
+- `DELETE /programs/:id` - Delete a program
+
+For detailed API documentation, visit the Swagger UI at `http://localhost:3001/docs` when the application is running.
 
 ## 🧪 Testing
 
@@ -121,11 +136,6 @@ pnpm test:cov
   ```bash
   pnpm types:check
   ```
-
-## 📚 API Documentation
-
-Once the application is running, you can access the Swagger documentation at:
-`http://localhost:3001/docs`
 
 ## 📁 Project Structure
 
