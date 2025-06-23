@@ -58,7 +58,7 @@ Before you begin, ensure you have the following installed:
    DATABASE_URL=${DATABASE_TYPE}://${DATABASE_USER}:${DATABASE_PASSWORD}@${DATABASE_HOST}:${DATABASE_PORT}/${DATABASE_NAME}
    ```
 
-3. Default env variables
+3. Default env variables:
    In the file `src/infra/env/handler.ts` are default env variables like basic auth user and password
 
 5. Install dependencies:
