@@ -44,25 +44,27 @@ Before you begin, ensure you have the following installed:
 
 2. Create a `.env` file in the root directory with the following variables:
    ```env
-   # Application
-   NODE_ENV=local # Options: local, development, production, test
-   API_PORT=3001
-
-   # Database
-   DATABASE_URL="mysql://root:root@db:3306/tv_schedule"
-
-   # Frontend
-   FRONT_DEPLOY_URL=""
-
-   # Authentication
-   BASIC_USER=admin
-   BASIC_PASS=VerySt0ngP4ss
+   # API
+   API_PORT="3001"
+   
+   # DATABASE
+   DATABASE_TYPE="mysql"
+   DATABASE_USER="admin"
+   DATABASE_PASSWORD="Str0ngP4ssw0rd"
+   DATABASE_HOST="db"
+   DATABASE_PORT="3306"
+   DATABASE_NAME="scheduler"
+   
+   DATABASE_URL=${DATABASE_TYPE}://${DATABASE_USER}:${DATABASE_PASSWORD}@${DATABASE_HOST}:${DATABASE_PORT}/${DATABASE_NAME}
    ```
 
-3. Install dependencies:
+3. Default env variables
+   In the file `src/infra/env/handler.ts` are default env variables like basic auth user and password
+
+5. Install dependencies:
    ```bash
    pnpm install
-   ```
+   ```   
 
 ## 🚀 Running the Application
 
@@ -73,7 +75,7 @@ Before you begin, ensure you have the following installed:
    ./init.sh
    ```
 
-2. The API will be available at `http://localhost:3001`
+2. The API will be available at `http://localhost:3001` and documentation in `http://localhost:3001/docs`
 
 ### Local Development
 
